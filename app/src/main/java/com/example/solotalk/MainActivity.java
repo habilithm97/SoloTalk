@@ -34,7 +34,19 @@ public class MainActivity extends AppCompatActivity {
         items = new ArrayList<>();
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true); // 아이템을 추가해도 RecyclerView의 크기가 변하지 않음
+        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() { // 레이아웃 변화 감지
+            @Override // 키보드가 올라올 때 RecyclerView의 위치를 마지막 포지션으로 이동시킴
+            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(bottom < oldBottom) { // bottom이 oldBottom에 비해서 줄어 들었다면 키보드가 올라왔다고 판단함
+                    view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                        }
+                    }, 100);
+                }
+            }
+        });
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -75,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                     adapter.addItem(new Talk(str));
                     adapter.notifyDataSetChanged();
+
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
 
                     edt.setText("");
                 }
