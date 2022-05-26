@@ -33,8 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:background="@drawable/send"
+        android:text="보내기"
+        android:textSize="20sp"
+        android:textColor="#0000ff"
+        android:textStyle="bold"
+        android:background="#00ff0000"
 
+        android:layout_marginLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
