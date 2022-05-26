@@ -70,10 +70,14 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = edt.getText().toString();
+                if(!edt.getText().toString().equals("")) {
+                    String str = edt.getText().toString();
 
-                adapter.addItem(new Talk(str));
-                adapter.notifyDataSetChanged();
+                    adapter.addItem(new Talk(str));
+                    adapter.notifyDataSetChanged();
+
+                    edt.setText("");
+                }
             }
         });
     }
