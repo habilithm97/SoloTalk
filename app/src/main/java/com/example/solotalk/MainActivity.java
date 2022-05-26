@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Talk> items;
 
     EditText edt;
+    Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         edt = (EditText)findViewById(R.id.edt);
+        edt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // 입력하기 전에 처리
+            }
 
-        Button btn = (Button)findViewById(R.id.btn);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // 입력창에 변화가 있을 때 처리
+                // 입력창에 변화가 있을 때는 보내기 버튼의 TextColor를 파란색으로하고,
+                // 변화가 없을 때는 그대로 회색으로 함
+                btn.setTextColor(Color.BLUE);
+                if(edt.getText().toString().equals("")) {
+                    btn.setTextColor(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // 입력이 끝났을 때 처리
+            }
+        });
+
+        btn = (Button)findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
