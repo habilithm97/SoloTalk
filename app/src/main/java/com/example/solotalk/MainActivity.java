@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -103,6 +105,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         EditText searchEdt = (EditText)findViewById(R.id.searchEdt);
+        // 앱 실행 시 키보드가 올라오지 않게 하기 위해
+        searchEdt.setInputType(0); // 0은 null
+        searchEdt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchEdt.setInputType(1);
+                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); // 키보드 제어 객체
+                manager.showSoftInput(searchEdt, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
