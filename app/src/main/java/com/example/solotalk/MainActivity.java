@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         items = new ArrayList<>();
 
+        loadData(); // 앱 실행 시 데이터 복원
+
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() { // 레이아웃 변화 감지
             @Override // 키보드가 올라올 때 RecyclerView의 위치를 마지막 포지션으로 이동시킴
@@ -120,12 +122,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        saveData(); // 앱이 중지 되면 데이터 저장
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    public void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("SoloTalk", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(items); // ArrayList 형식의 데이터를 JSON 형식의 데이터로 변환하여 SharedPreferences에 저장할 수 있음
+        editor.putString("Chatting alone", json);
+        editor.apply();
+    }
+
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("SoloTalk", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Chatting alone", null);
+        Type type = new TypeToken<ArrayList<Talk>>() {}.getType(); // JSON 형식의 데이터를 ArrayList 형식의 데이터로 변환하여 복원할 수 있음
+        items = gson.fromJson(json, type);
     }
 }

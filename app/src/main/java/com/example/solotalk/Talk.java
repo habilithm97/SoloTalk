@@ -14,4 +14,11 @@ public class Talk {
     public void setStr(String str) {
         this.str = str;
     }
+
+    @Override
+    public String toString() {
+        return "Talk{" +
+                "str='" + str + '\'' +
+                '}';
+    }
 }
