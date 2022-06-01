@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     recyclerView.smoothScrollToPosition(adapter.getItemCount());
 
                     edt.setText("");
+
+                    saveData();
                 }
             }
         });
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        saveData(); // 앱이 중지 되면 데이터 저장
+        saveData();
     }
 
     @Override
