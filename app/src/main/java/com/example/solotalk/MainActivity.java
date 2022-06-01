@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         items = new ArrayList<>();
 
-        loadData(); // 앱 실행 시 데이터 복원
+        loadData(); // 앱 실행 시 데이터 복원(이건 왜 onResume() 으로 안되냐?
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() { // 레이아웃 변화 감지
-            @Override // 키보드가 올라올 때 RecyclerView의 위치를 마지막 포지션으로 이동시킴
+            @Override // 키보드가 올라올 때 마지막 아이템의 위치로 포커스를 이동시킴
             public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if(bottom < oldBottom) { // bottom이 oldBottom에 비해서 줄어 들었다면 키보드가 올라왔다고 판단함
                     view.postDelayed(new Runnable() {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     adapter.addItem(new Talk(str));
                     adapter.notifyDataSetChanged();
 
-                    recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                    recyclerView.smoothScrollToPosition(adapter.getItemCount()); // 채팅 입력 시 마지막 아이템 위치로 포커스를 이동시킴
 
                     edt.setText("");
 
@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        recyclerView.smoothScrollToPosition(adapter.getItemCount()); // 앱 재실행 시 마지막 아이템 위치로 포커스를 이동시킴
     }
 
     public void saveData() {
