@@ -1,5 +1,6 @@
 package com.example.solotalk;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TalkAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<Talk> items;
+    ArrayList<Talk> items, filteredList;
 
     EditText edt;
     Button btn;
@@ -38,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        items = new ArrayList<>();
+        items = new ArrayList<>(); // 기존의 아이템 리스트
+        filteredList = new ArrayList<>(); // 필터링된 아이템 리스트
 
         loadData(); // 앱 실행 시 데이터 복원(이건 왜 onResume() 으로 안되냐?
 
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // 입력창에 변화가 생기기 전에 처리
+                // 입력하기 전에 처리
             }
 
             @Override
@@ -131,7 +136,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // 입력창에 변화가 생긴 후에 처리
+                // 입력이 끝난 후에 처리
+                String str = searchEdt.getText().toString();
+                searchFilter(str);
             }
         });
     }
@@ -166,4 +173,38 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<Talk>>() {}.getType(); // JSON 형식의 데이터를 ArrayList 형식의 데이터로 변환하여 복원할 수 있음
         items = gson.fromJson(json, type);
     }
+
+    public void searchFilter(String str) { // 검색창에 입력한 문자열(str)이 파라미터로 전달됨
+        filteredList.clear();
+
+        for(int i = 0; i < items.size(); i++) {
+            if(items.get(i).getStr().toLowerCase().contains(str.toLowerCase())) {
+                filteredList.add(items.get(i));
+            }
+        }
+        adapter.filterList(filteredList);
+    }
+
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.item_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.all_delete:
+                allDelete();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void allDelete() {
+
+    }
+     */
 }

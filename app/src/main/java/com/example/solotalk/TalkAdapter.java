@@ -1,5 +1,6 @@
 package com.example.solotalk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,8 +17,14 @@ import java.util.ArrayList;
 public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
     ArrayList<Talk> items;
+    Activity activity;
 
     Context context;
+
+    public TalkAdapter(ArrayList<Talk> items, Activity activity) {
+        this.items = items;
+        this.activity = activity;
+    }
 
     @NonNull
     @Override
@@ -86,6 +93,11 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
         notifyItemRemoved(position); // 특정 아이템 한 개를 삭제
         // 여러 개의 아이템을 변경
         notifyItemRangeChanged(position, items.size()); // (변경된 첫 번째 아이템의 위치, 변경된 아이템의 갯수)
+    }
+
+    public void filterList(ArrayList<Talk> filteredList) {
+        items = filteredList;
+        notifyDataSetChanged();
     }
 
     public TalkAdapter(ArrayList<Talk> dataSet) {
