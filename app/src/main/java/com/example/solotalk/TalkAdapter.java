@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
@@ -20,6 +22,10 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
     Activity activity;
 
     Context context;
+
+    long time;
+    Date date;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public TalkAdapter(ArrayList<Talk> items, Activity activity) {
         this.items = items;
@@ -38,7 +44,7 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TalkAdapter.ViewHolder holder, int position) {
-        holder.tv.setText(items.get(position).getStr());
+        holder.chatBubbleTv .setText(items.get(position).getStr());
     }
 
     @Override
@@ -52,12 +58,15 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView tv;
+        private final TextView dateTv, chatBubbleTv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv = (TextView)itemView.findViewById(R.id.tv);
+            dateTv = (TextView)itemView.findViewById(R.id.dateTv);
+            dateTv.setText(getTime());
+
+            chatBubbleTv = (TextView)itemView.findViewById(R.id.chatBubbleTv);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -98,6 +107,12 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
     public void filterList(ArrayList<Talk> filteredList) {
         items = filteredList;
         notifyDataSetChanged();
+    }
+
+    private String getTime() {
+        time = System.currentTimeMillis();
+        date = new Date(time);
+        return dateFormat.format(date);
     }
 
     public TalkAdapter(ArrayList<Talk> dataSet) {

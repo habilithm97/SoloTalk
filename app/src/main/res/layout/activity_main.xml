@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        android:hint="과거의 채팅 내용을 검색하여 확인할 수 있습니다. "
         android:background="#EDD5B2" />
 
     <androidx.recyclerview.widget.RecyclerView
