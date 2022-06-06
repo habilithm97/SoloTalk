@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
     long time;
     Date date;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    static int position;
 
     public TalkAdapter(ArrayList<Talk> items, Activity activity) {
         this.items = items;
@@ -67,6 +70,20 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
             dateTv.setText(getTime());
 
             chatBubbleTv = (TextView)itemView.findViewById(R.id.chatBubbleTv);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    position = getAdapterPosition();
+
+                    String str = chatBubbleTv.getText().toString();
+
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("str", str);
+                    context.startActivity(intent);
+                    //((Activity)context).startActivityForResult(intent, 97);
+                }
+            });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
