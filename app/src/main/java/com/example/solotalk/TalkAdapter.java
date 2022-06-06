@@ -44,7 +44,7 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TalkAdapter.ViewHolder holder, int position) {
-        holder.chatBubbleTv .setText(items.get(position).getStr());
+        holder.chatBubbleTv.setText(items.get(position).getStr());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView chatBubbleTv, dateTv, dateTv2;
+        TextView chatBubbleTv, dateTv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,15 +66,7 @@ public class TalkAdapter extends RecyclerView.Adapter<TalkAdapter.ViewHolder> {
             dateTv = (TextView)itemView.findViewById(R.id.dateTv);
             dateTv.setText(getTime());
 
-            dateTv2 = (TextView)itemView.findViewById(R.id.dateTv2);
-            dateTv2.setText(getTime());
-
             chatBubbleTv = (TextView)itemView.findViewById(R.id.chatBubbleTv);
-
-            if(chatBubbleTv.getText().toString().length() > 20) {
-                dateTv.setVisibility(View.GONE);
-                dateTv2.setVisibility(View.VISIBLE);
-            }
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
