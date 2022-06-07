@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 // 입력이 끝난 후에 처리
                 String str = searchEdt.getText().toString();
                 searchFilter(str);
+
+                recyclerView.smoothScrollToPosition(adapter.getItemCount()); // 검색을 하거나 검색이 끝나면 마지막 아이템 위치로 포커스를 이동시킴
             }
         });
     }
